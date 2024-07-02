@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: doracorde
+      MYSQL_DATABASE: doracorde
+      MYSQL_USER: root
+      MYSQL_PASSWORD: doracorde
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  app:
+    build: .
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://database-1.ctu2uoiugatf.us-east-2.rds.amazonaws.com:3306/doracorde
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: doracorde
+
+volumes:
+  mysql-data:
